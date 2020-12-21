@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div id="left-header">Hi {{user.first_name}} {{user.last_name}}!</div>
+        <div id="right-header">
+          <!--The /user/logout is the app's urls.py which triggers the logout method from views.logout-->
+          <a id="log-out" href="/user/logout">log off</a>
+        </div>
+      </div>
+      <div id="groups-container">
+        <div id="group-list">
+        <p>Here are the organizations you can join:</p>
+        {% for group in groups %}
+        <ul>
+            <li>
+                <p><a href="/groups/{{group.id}}">{{group.org_name}} </a>
+                    {% if request.session.user_id == group.publisher.id %}
+                    <button><a href="/groups/{{group.id}}/delete">Delete</a></button>
+                    {% endif %}
+
+            
+                </p>  
+                <p>Members: {{group.join.all.count}}</p>               
+                <p>{{group.description}}</p>
+            </li>
+        </ul>
+        {% endfor %}
+
+    </div>
+    <div id="group-form">
+        <div class="messages-container">
+            {% if messages %}
+            <ul class="messages">
+              {% for message in messages %}
+              <li {% if message.tags %} class="{{message.tags}}" {% endif %}>
+                {{message}}
+              </li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+        <p>Create a new organization</p>
+        <form action="/groups/create" method="POST">
+          {% csrf_token %}
+          <label for="org_name">Organization Name</label>
+          <input type="text" name="org_name" /> <br />
+          <label for="description">Description</label>
+          <input type="text" name="description"> </input>
+          <br />
+          <input type="submit" value="Create" />
+        </form>
+    </div>
+    </div>
+
+    </div>
+  </body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Groups</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div id="right-header">
+          <!--The /user/logout is the app's urls.py which triggers the logout method from views.logout-->
+          <a id="dashboard" href="/groups">Dashboard</a>
+          <a id="log-out" href="/user/logout">log off</a>
+        </div>
+      </div>
+      <div id="group-container">
+        <h2>{{group.org_name}}</h2>
+        {% if user not in group.join.all %}
+        <button><a href="/groups/{{group.id}}/join">Join Group</a></button>
+        {% else %}
+        <button><a href="/groups/{{group.id}}/leave">Leave Group</a></button>
+        {% endif %}
+
+        <p>{{group.description}}</p>
+      </div>
+      <div id="group-memebers-container">
+        <p>
+          {% if request.session.user_id == group.publisher.id %}
+          <p>Created By: YOU</p>
+          {% else %}
+          Created By: {{group.publisher.first_name}}
+          {{group.publisher.last_name}}
+          {% endif %}
+        </p>
+        <p>Members:</p>
+        {% for user in group.join.all %}
+        <ul>
+          <li>{{user.first_name}} {{user.last_name}}</li>
+        </ul>
+        {% endfor %}
+      </div>
+    </div>
+  </body>
+</html>

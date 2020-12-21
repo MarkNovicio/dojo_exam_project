@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome!</title>
+  </head>
+  <body>
+    <div id="container">
+      <div id="left-container">
+        <div class="messages-container">
+          {% if messages %}
+          <ul class="messages">
+            {% for message in messages %}
+            <li {% if message.tags %} class="{{message.tags}}" {% endif %}>
+              {{message}}
+            </li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+
+        <h2>Registration</h2>
+        <form action="/registration/create" method="POST">
+          {% csrf_token %}
+          <label for="first_name">First Name:</label>
+          <input type="text" name="first_name" /> <br />
+          <label for="last_name">Last Name:</label>
+          <input type="text" name="last_name" /> <br />
+          <label for="email">Email</label>
+          <input type="email" name="email" /> <br />
+          <label for="password">Password:</label>
+          <input type="password" name="password" /> <br />
+          <label for="confirm_pw">Confirm Password:</label>
+          <input type="password" name="confirm_pw" /> <br />
+          <input type="submit" value="Register" />
+        </form>
+      </div>
+      <div id="right-container">
+        <h2>Login</h2>
+        <form action="/user/login" method="POST">
+          {% csrf_token %}
+          <label for="email">Email</label> <input type="email" name="email" />
+          <br />
+          <label for="Password">Password</label>
+          <input type="password" name="password" /> <br />
+          <input type="submit" value="Log In" />
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
